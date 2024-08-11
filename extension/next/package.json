@@ -1,0 +1,52 @@
+{
+  "name": "@zodified-api/next",
+  "description": "Next.js integration for ZodifiedAPI",
+  "author": "Euphysics",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Euphysics/zodified_api.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "zod",
+    "api",
+    "next.js",
+    "typescript"
+  ],
+  "version": "1.0.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:pack": "tsc && vite build && npm pack",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@zodified-api/core": "^1.0.0",
+    "next": "^14.2.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.2.0",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.0",
+    "vite-plugin-dts": "^4.0.2"
+  },
+  "peerDependencies": {
+    "zod": "^3.23.8"
+  },
+  "packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"
+}
