@@ -1,0 +1,22 @@
+name: Add PR Label
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  add-pr-label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { addPrLabel } = require('./.github/scripts/add-pr-label.cjs');
+            await addPrLabel({
+              github,
+              context,
+              branch: process.env.GITHUB_HEAD_REF,
+            });

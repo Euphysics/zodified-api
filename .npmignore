@@ -1,0 +1,26 @@
+# OSX
+.DS_Store
+
+# IDE
+.idea
+
+# CI
+.husky
+biome.json
+
+# npm
+node_modules
+pnpm-lock.yaml
+
+# Build
+src
+.gitignore
+tsconfig.json
+vite.config.ts
+
+# Extensions
+.vscode
+extension
+
+# Examples
+example

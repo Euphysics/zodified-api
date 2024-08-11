@@ -1,0 +1,70 @@
+name: Publish Release
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'release'))
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 'latest'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Package
+        run: pnpm run build
+
+      - name: Set New Version and Release Tag
+        run: |
+          NEW_VERSION=$(node -pe "require('./package.json').version")
+          echo "NEW_VERSION=v${NEW_VERSION}" >> $GITHUB_ENV
+          echo "RELEASE_TAG=v${NEW_VERSION}" >> $GITHUB_ENV
+
+      - name: Publish Package
+        run: |
+          echo "publish package"
+          echo "command like 'npm publish --access public --tag ${{ env.RELEASE_TAG }}'"
+
+      - name: Push New Version Tag
+        run: |
+          if git rev-parse ${{ env.RELEASE_TAG }} >/dev/null 2>&1; then
+            echo "Tag ${{ env.RELEASE_TAG }} already exists, skipping..."
+          else
+            git tag ${{ env.RELEASE_TAG }}
+            git push origin ${{ env.RELEASE_TAG }}
+          fi
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          tag_name: ${{ env.RELEASE_TAG }}
+          generate_release_notes: true
