@@ -1,0 +1,67 @@
+{
+  "name": "@zodified-api/core",
+  "description": "A type-safe API client and server library using Zod",
+  "author": "Euphysics",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Euphysics/zodified_api.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "zod",
+    "api",
+    "typescript"
+  ],
+  "version": "0.0.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:pack": "tsc && vite build && npm pack",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:cov": "vitest run --coverage",
+    "lint": "biome lint --write ./",
+    "format": "biome format --write ./",
+    "check": "biome check --write ./",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,json}": [
+      "biome check --write"
+    ]
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@types/node": "^22.2.0",
+    "@vitest/coverage-v8": "^2.0.5",
+    "husky": "^9.1.4",
+    "jsdom": "^24.1.1",
+    "lint-staged": "^15.2.8",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.0",
+    "vite-plugin-dts": "^4.0.2",
+    "vitest": "^2.0.5",
+    "vitest-fetch-mock": "^0.3.0"
+  },
+  "peerDependencies": {
+    "zod": "^3.23.8"
+  },
+  "packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"
+}

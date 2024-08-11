@@ -1,0 +1,64 @@
+name: Create Release PR
+  
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: 'Select release semantic version'
+        required: true
+        type: choice
+        options:
+          - 'patch'
+          - 'minor'
+          - 'major'
+
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Git configuration
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Get new version
+        id: new-version
+        run: |
+          echo "NEW_VERSION=$(npm --no-git-tag-version version ${{ github.event.inputs.release-version }})" >> $GITHUB_ENV
+
+      - name: Update package.json version
+        run: |
+          git add package.json
+          git commit -m "chore: release ${{ env.NEW_VERSION }}"
+
+      - name: Generate GitHub App Token
+        uses: actions/create-github-app-token@v1
+        id: generate-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+
+      - name: Create PR Body
+        id: pr-body
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { createReleasePrBody } = require('./.github/scripts/create-release-pr-body.cjs');
+            return await createReleasePrBody({ context, github });
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: release/${{ env.NEW_VERSION }}
+          title: release ${{ env.NEW_VERSION }}
+          labels: release
+          body: ${{ steps.pr-body.outputs.result }}
+          token: ${{ steps.generate-token.outputs.token }}

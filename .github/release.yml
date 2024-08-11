@@ -1,0 +1,32 @@
+changelog:
+  categories:
+    - title: 🔥 Breaking Changes
+      labels:
+        - 'Type: Breaking Change'
+    - title: ✨ Features
+      labels:
+        - 'Type: Feature'
+    - title: 🐛 Bug Fixes
+      labels:
+        - 'Type: Bug'
+    - title: 📚 Documentation
+      labels:
+        - 'Type: Documentation'
+    - title: 🔨 Refactoring
+      labels:
+        - 'Type: Refactoring'
+    - title: 🚀 Performance Improvements
+      labels:
+        - 'Type: Performance'
+    - title: ⬆️ Update Dependencies
+      labels:
+        - 'Type: Dependencies'
+    - title: 👷 CI
+      labels:
+        - 'Type: CI'
+    - title: 🔧 Chore
+      labels:
+        - 'Type: Chore'
+    - title: Others
+      labels:
+        - '*'
