@@ -135,7 +135,7 @@ Adapters that convert Next.js `NextRequest` and `NextResponse` objects to generi
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request or open an Issue on the [GitHub repository](https://github.com/your-repo/zodified-api-next).
+Contributions are welcome! Please feel free to submit a Pull Request or open an Issue on the [GitHub repository](https://github.com/Euphysics/zodified-api.git).
 
 ## License
 
