@@ -1,5 +1,4 @@
 export * from "@/types";
-export * from "@/error";
-export * from "@/config";
-export { ApiClient } from "@/client";
-export { AbstractApiServer, GenericApiServer } from "@/server";
+export * from "@/api";
+export * from "@/client";
+export * from "@/server";

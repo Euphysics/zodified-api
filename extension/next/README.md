@@ -1,14 +1,15 @@
 # @zodified-api/next
 
-`@zodified-api/next` is an extension for [ZodifiedAPI](https://www.npmjs.com/package/@zodified-api/core) that provides seamless integration with Next.js. It allows you to create type-safe APIs using ZodifiedAPI's robust validation and handling mechanisms, while leveraging the powerful features of Next.js.
+`@zodified-api/next` is an extension for [ZodifiedAPI](https://www.npmjs.com/package/@zodified-api/core) that provides seamless integration with Next.js. It allows you to create type-safe APIs using ZodifiedAPI's robust validation and handling mechanisms while leveraging the powerful features of Next.js.
 
 ## Features
 
 - **Type Safety**: Ensures type safety across your Next.js API routes.
 - **Zod Integration**: Utilizes Zod for schema validation, ensuring consistent data validation.
 - **Next.js Compatibility**: Works seamlessly with both the App Router and Pages Router in Next.js.
+- **Mocking Support**: Leverage the `useMock` feature to simulate API responses in your Next.js API routes, ideal for testing and development.
 - **Middleware Support**: Easily add and manage middleware for your API routes.
-- **Custom Error Handling**: Handles API errors gracefully with custom error classes.
+- **Fetch-Based Implementation**: Unlike Zodios, this library wraps around `fetch` instead of `axios`.
 
 ## Installation
 
@@ -28,110 +29,113 @@ yarn add @zodified-api/next
 
 ### 1. Define Your API Configuration
 
-Use `zod` to define your API configuration and schema validation.
+First, use `zod` to define your API configuration and schema validation.
 
 ```typescript
 import { z } from 'zod';
-import { createApiConfig } from '@zodified-api/core';
+import { makeApi, makeEndpoint } from '@zodified-api/core';
 
-const apiConfig = createApiConfig('https://api.example.com', {
-  getUser: {
-    method: 'GET',
-    path: '/user',
-    query: z.object({ id: z.string() }),
-    response: z.object({ id: z.string(), name: z.string() }),
+// Define a schema for the user object
+const userSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+});
+
+// Define a 'getUser' endpoint
+const getUser = makeEndpoint({
+  method: 'get',
+  path: '/user',
+  alias: 'getUser',
+  description: 'Fetch a user by ID',
+  parameters: [
+    {
+      type: 'Query',
+      name: 'id',
+      schema: z.number(),
+      description: 'User ID',
+    },
+  ],
+  response: userSchema,
+  customProperties: {
+    authRequired: true,
   },
 });
+
+// Combine all endpoints into a single API configuration
+export const api = makeApi([getUser]);
 ```
 
-### 2. Create a Next.js API Server
+### 2. Create a Next.js API Route
 
-Use the `NextJsApiServer` class to create a type-safe API server that integrates with Next.js.
+Use the `NextJsAppRouter` or `NextJsPagesRouter` classes to create a type-safe API route that integrates with Next.js.
 
-#### App Router (Next.js 13+)
-
-For the Next.js App Router, you can define your API handlers as follows:
+#### Example with the Next.js App Router
 
 ```typescript
-import { NextJsApiServer } from '@zodified-api/next';
-import { NextRequest, NextResponse } from 'next/server';
+import { Method, findEndpointByMethodAndPath } from '@zodified-api/core';
+import { NextJsAppRouter } from '@zodified-api/next';
+import { api } from '@/api'; // Your API configuration file
+import type { NextRequest } from 'next/server';
 
-const apiServer = new NextJsApiServer(apiConfig);
+// Define the request handler for the '/user' endpoint
+const handler = async (req) => {
+  const user = { id: 1, name: 'John Doe' };
+  return user;
+};
 
-export async function GET(req: NextRequest) {
-  const handler = apiServer.handleAppRoute('getUser', async (req, res) => {
-    const user = { id: req.parsedQuery.id, name: 'John Doe' };
-    return user;
-  });
+// Initialize the Next.js API router with the defined API configuration
+const router = new NextJsAppRouter(api);
 
-  return handler(req);
-}
-```
+// Add middleware to the router
+router.use((req, res, next) => {
+  const { method, nextUrl } = req;
+  const endpoint = findEndpointByMethodAndPath(
+    api,
+    method.toLowerCase() as Method,
+    nextUrl.pathname as any, // Cast pathname to any to satisfy type checks
+  );
 
-#### Pages Router
+  if (!endpoint) {
+    return res.status(404).json({ error: 'Not found' });
+  }
 
-For the Next.js Pages Router, use the following approach:
+  if (endpoint.customProperties.authRequired) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
 
-```typescript
-import { NextJsApiServer } from '@zodified-api/next';
-import { NextApiRequest, NextApiResponse } from 'next';
-
-const apiServer = new NextJsApiServer(apiConfig);
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const handle = apiServer.handlePagesRoute('getUser', async (req, res) => {
-    const user = { id: req.parsedQuery.id, name: 'John Doe' };
-    return user;
-  });
-
-  await handle(req, res);
-}
-```
-
-### 3. Middleware Support
-
-You can easily add middleware to your API server using the `use` method.
-
-```typescript
-apiServer.use(async (req, res, next) => {
-  console.log(`Received request: ${req.method} ${req.url}`);
   next();
 });
+
+// Export the GET handler for the '/user' route
+export const GET = router.handleAppRoute('get', '/user', handler);
 ```
 
-### 4. Error Handling
+### Explanation
 
-ZodifiedAPI provides custom error classes for API and network errors, which can be caught and handled appropriately.
+1. **API Request Handler**:
+   - The `handler` function processes incoming API requests and returns a user object.
+   - The `findEndpointByMethodAndPath` function is used to retrieve endpoint metadata, such as custom properties.
 
-```typescript
-import { ApiError } from '@zodified-api/core';
+2. **Middleware Integration**:
+   - Middleware is used to check if the requested endpoint requires authentication. If the endpoint is not found or if authentication is required and not provided, appropriate HTTP responses (`404 Not Found` or `401 Unauthorized`) are returned.
 
-apiServer.handle('getUser', async (req, res) => {
-  try {
-    // Your API logic here
-  } catch (error) {
-    if (error instanceof ApiError) {
-      res.status(error.statusCode).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  }
-});
-```
+3. **NextJsAppRouter and NextJsPagesRouter**:
+   - `NextJsAppRouter` is used for handling API routes in the Next.js App Router.
+   - The `handleAppRoute` method connects the handler function to the appropriate HTTP method and path, ensuring clean, organized, and type-safe API route management within a Next.js project.
 
 ## API Reference
 
-### `NextJsApiServer`
+### `NextJsAppRouter`
 
 A class that extends ZodifiedAPI's server capabilities to integrate with Next.js.
 
 - **Methods**:
-  - `handleAppRoute(endpointKey, handler)`: Handles a specific API endpoint in the Next.js App Router.
-  - `handlePagesRoute(endpointKey, handler)`: Handles a specific API endpoint in the Next.js Pages Router.
-
-### `NextRequestAdapter` & `NextResponseAdapter`
-
-Adapters that convert Next.js `NextRequest` and `NextResponse` objects to generic request and response objects compatible with ZodifiedAPI.
+  - `handleAppRoute<M extends Method, Path extends ZodifiedPathsByMethod<Api, M>>(
+      method: M,
+      path: Path,
+      handler: ZodifiedHandler<Api, M, Path, NextRequestAdapter, NextResponseAdapter>
+    )`: Handles a specific API endpoint in the Next.js App Router.
+  - `use(middleware: (req: NextRequestAdapter, res: NextResponseAdapter, next: () => void) => void)`: Adds middleware to the router.
 
 ## Contributing
 

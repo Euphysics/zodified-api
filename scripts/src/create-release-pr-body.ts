@@ -90,9 +90,7 @@ const getMergedPulls = async (
       )
       .map((pr) => ({
         number: pr.number,
-        // biome-ignore lint/style/noNonNullAssertion: user is guaranteed to be non-null
         user: { login: pr.user!.login }, // Non-null assertion operator to ensure `user` is not null
-        // biome-ignore lint/style/noNonNullAssertion: merge_commit_sha is guaranteed to be non-null
         merge_commit_sha: pr.merge_commit_sha!,
       }));
 
