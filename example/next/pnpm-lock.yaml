@@ -12,11 +12,11 @@ importers:
         specifier: ^5.51.23
         version: 5.51.23(react@18.3.1)
       '@zodified-api/core':
-        specifier: file:../../zodified-api-core-1.0.1.tgz
-        version: file:../../zodified-api-core-1.0.1.tgz(zod@3.23.8)
+        specifier: ^2.0.0
+        version: 2.0.0(zod@3.23.8)
       '@zodified-api/next':
-        specifier: file:../../extension/next/zodified-api-next-1.0.1.tgz
-        version: file:../../extension/next/zodified-api-next-1.0.1.tgz(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zod@3.23.8)
+        specifier: ^2.0.0
+        version: 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zod@3.23.8)
       next:
         specifier: 14.2.5
         version: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -32,7 +32,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.3.0
-        version: 22.3.0
+        version: 22.4.0
       '@types/react':
         specifier: ^18.3.3
         version: 18.3.3
@@ -116,8 +116,8 @@ packages:
     peerDependencies:
       react: ^18.0.0
 
-  '@types/node@22.3.0':
-    resolution: {integrity: sha512-nrWpWVaDZuaVc5X84xJ0vNrLvomM205oQyLsRt7OHNZbSHslcWsvgFR7O7hire2ZonjLrWBbedmotmIlJDVd6g==}
+  '@types/node@22.4.0':
+    resolution: {integrity: sha512-49AbMDwYUz7EXxKU/r7mXOsxwFr4BYbvB7tWYxVuLdb2ibd30ijjXINSMAHiEEZk5PCRBmW1gUeisn2VMKt3cQ==}
 
   '@types/prop-types@15.7.12':
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
@@ -128,15 +128,13 @@ packages:
   '@types/react@18.3.3':
     resolution: {integrity: sha512-hti/R0pS0q1/xx+TsI73XIqk26eBsISZ2R0wUijXIngRK9R/e7Xw/cXVxQK7R5JjW+SV4zGcn5hXjudkN/pLIw==}
 
-  '@zodified-api/core@file:../../zodified-api-core-1.0.1.tgz':
-    resolution: {integrity: sha512-9cEiXpgYSXMObrTiAem0e2ESoCWRwxE4e8VgOAtaS3BebZJp/syl4PcQYXcgDIcwqvHKkyTZTFJkwKtiDm6m5A==, tarball: file:../../zodified-api-core-1.0.1.tgz}
-    version: 1.0.1
+  '@zodified-api/core@2.0.0':
+    resolution: {integrity: sha512-vUm3Lnkz3QwVgbXeqD6uMe77lgfrwV8nmUSMjgNva68xiPUz1NHFJMEaxoTtT7GkbDA6cYrac2AEN+NWJg3K7Q==}
     peerDependencies:
       zod: ^3.23.8
 
-  '@zodified-api/next@file:../../extension/next/zodified-api-next-1.0.1.tgz':
-    resolution: {integrity: sha512-WC6s+vYHgMTNlxCtceieKt6S5PzX3459D/QVumzunLW3uU5Ol37m2dv2lfr2mxvpZnAXz8/k+46GBGQguMOUcw==, tarball: file:../../extension/next/zodified-api-next-1.0.1.tgz}
-    version: 1.0.1
+  '@zodified-api/next@2.0.0':
+    resolution: {integrity: sha512-tJ/j9Qt+f6dLHIxcbYpWabjCCzhbVRpezj884uNVU+EvUo/9F3e8jEKDI5Ejv/dk1hP7wx4dwdEBzADeAkACvg==}
     peerDependencies:
       zod: ^3.23.8
 
@@ -234,8 +232,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  undici-types@6.18.2:
-    resolution: {integrity: sha512-5ruQbENj95yDYJNS3TvcaxPMshV7aizdv/hWYjGIKoANWKjhWNBsr2YEuYZKodQulB1b8l7ILOuDQep3afowQQ==}
+  undici-types@6.19.6:
+    resolution: {integrity: sha512-e/vggGopEfTKSvj4ihnOLTsqhrKRN3LeO6qSN/GxohhuRv8qH9bNQ4B8W7e/vFL+0XTnmHPB4/kegunZGA4Org==}
 
   zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
@@ -285,9 +283,9 @@ snapshots:
       '@tanstack/query-core': 5.51.21
       react: 18.3.1
 
-  '@types/node@22.3.0':
+  '@types/node@22.4.0':
     dependencies:
-      undici-types: 6.18.2
+      undici-types: 6.19.6
 
   '@types/prop-types@15.7.12': {}
 
@@ -300,13 +298,13 @@ snapshots:
       '@types/prop-types': 15.7.12
       csstype: 3.1.3
 
-  '@zodified-api/core@file:../../zodified-api-core-1.0.1.tgz(zod@3.23.8)':
+  '@zodified-api/core@2.0.0(zod@3.23.8)':
     dependencies:
       zod: 3.23.8
 
-  '@zodified-api/next@file:../../extension/next/zodified-api-next-1.0.1.tgz(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zod@3.23.8)':
+  '@zodified-api/next@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zod@3.23.8)':
     dependencies:
-      '@zodified-api/core': file:../../zodified-api-core-1.0.1.tgz(zod@3.23.8)
+      '@zodified-api/core': 2.0.0(zod@3.23.8)
       next: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       zod: 3.23.8
     transitivePeerDependencies:
@@ -398,6 +396,6 @@ snapshots:
 
   typescript@5.5.4: {}
 
-  undici-types@6.18.2: {}
+  undici-types@6.19.6: {}
 
   zod@3.23.8: {}

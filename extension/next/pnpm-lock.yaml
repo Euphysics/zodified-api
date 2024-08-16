@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@zodified-api/core':
-        specifier: file:../../zodified-api-core-1.0.1.tgz
-        version: file:../../zodified-api-core-1.0.1.tgz(zod@3.23.8)
+        specifier: ^2.0.0
+        version: 2.0.0(zod@3.23.8)
       next:
         specifier: ^14.2.5
         version: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -425,9 +425,8 @@ packages:
   '@vue/shared@3.4.38':
     resolution: {integrity: sha512-q0xCiLkuWWQLzVrecPb0RMsNWyxICOjPrcrwxTUEHb1fsnvni4dcuyG7RT/Ie7VPTvnjzIaWzRMUBsrqNj/hhw==}
 
-  '@zodified-api/core@file:../../zodified-api-core-1.0.1.tgz':
-    resolution: {integrity: sha512-9cEiXpgYSXMObrTiAem0e2ESoCWRwxE4e8VgOAtaS3BebZJp/syl4PcQYXcgDIcwqvHKkyTZTFJkwKtiDm6m5A==, tarball: file:../../zodified-api-core-1.0.1.tgz}
-    version: 1.0.1
+  '@zodified-api/core@2.0.0':
+    resolution: {integrity: sha512-vUm3Lnkz3QwVgbXeqD6uMe77lgfrwV8nmUSMjgNva68xiPUz1NHFJMEaxoTtT7GkbDA6cYrac2AEN+NWJg3K7Q==}
     peerDependencies:
       zod: ^3.23.8
 
@@ -1135,7 +1134,7 @@ snapshots:
 
   '@vue/shared@3.4.38': {}
 
-  '@zodified-api/core@file:../../zodified-api-core-1.0.1.tgz(zod@3.23.8)':
+  '@zodified-api/core@2.0.0(zod@3.23.8)':
     dependencies:
       zod: 3.23.8
 

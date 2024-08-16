@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.51.23",
-    "@zodified-api/core": "^1.0.1",
-    "@zodified-api/next": "^1.0.1",
+    "@zodified-api/core": "^2.0.0",
+    "@zodified-api/next": "^2.0.0",
     "next": "14.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

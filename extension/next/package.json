@@ -13,7 +13,7 @@
     "next.js",
     "typescript"
   ],
-  "version": "1.0.1",
+  "version": "2.0.0",
   "type": "module",
   "files": [
     "dist"
@@ -35,7 +35,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@zodified-api/core": "^1.0.1",
+    "@zodified-api/core": "^2.0.0",
     "next": "^14.2.5",
     "zod": "^3.23.8"
   },
