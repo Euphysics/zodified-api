@@ -1,23 +1,15 @@
-import type { GenericResponse } from "@zodified-api/core";
+import type { BaseResponse } from "@zodified-api/core";
 import { NextResponse } from "next/server";
 
-export class NextResponseAdapter implements GenericResponse {
-  private response: NextResponse;
+export class NextResponseAdapter implements BaseResponse<NextResponse> {
+  private code = 200;
 
-  constructor() {
-    this.response = new NextResponse();
-  }
-
-  status(code: number): GenericResponse {
-    this.response = NextResponse.next({ status: code });
+  status(code: number): this {
+    this.code = code;
     return this;
   }
 
-  json(data: unknown): void {
-    this.response = NextResponse.json(data, { status: this.response.status });
-  }
-
-  getResponse(): NextResponse {
-    return this.response;
+  json(data: unknown): NextResponse {
+    return NextResponse.json(data, { status: this.code });
   }
 }

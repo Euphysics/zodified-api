@@ -35,15 +35,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@zodified-api/core": "^1.0.0",
+    "@zodified-api/core": "^1.0.1",
     "next": "^14.2.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^22.2.0",
-    "typescript": "^5.5.3",
-    "vite": "^5.4.0",
-    "vite-plugin-dts": "^4.0.2"
+    "@types/node": "^22.3.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.1",
+    "vite-plugin-dts": "^4.0.3"
   },
   "peerDependencies": {
     "zod": "^3.23.8"

@@ -1,1 +1,2 @@
-export { NextJsApiServer } from "./main";
+export { NextJsAppRouter } from "./main";
+export { NextRequestAdapter, NextResponseAdapter } from "./app";

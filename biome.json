@@ -12,7 +12,7 @@
       "coverage",
       ".github",
       ".husky",
-      ".vscode"
+      ".next"
     ],
     "indentStyle": "space",
     "indentWidth": 2
@@ -26,10 +26,14 @@
       "coverage",
       ".github",
       ".husky",
+      ".next",
       ".vscode"
     ],
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "style": {
+        "noNonNullAssertion": "off"
+      }
     }
   }
 }
