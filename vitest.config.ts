@@ -8,7 +8,13 @@ export default defineConfig({
     coverage: {
       reporter: ["text", "html"],
       include: ["src/**/*.ts"],
-      exclude: ["**/index.ts", "**/*.d.ts", "**/*.test.ts", ...defaultExclude],
+      exclude: [
+        "**/index.ts",
+        "**/*.d.ts",
+        "**/*.test.ts",
+        "src/types/**/*",
+        ...defaultExclude,
+      ],
     },
     setupFiles: ["./vitest.setup.ts"],
   },
