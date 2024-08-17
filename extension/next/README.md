@@ -96,11 +96,11 @@ router.use((req, res, next) => {
   );
 
   if (!endpoint) {
-    return res.status(404).json({ error: 'Not found' });
+    throw new Error('Endpoint not found');
   }
 
   if (endpoint.customProperties.authRequired) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    throw new Error('Unauthorized');
   }
 
   next();
@@ -117,7 +117,7 @@ export const GET = router.handleAppRoute('get', '/user', handler);
    - The `findEndpointByMethodAndPath` function is used to retrieve endpoint metadata, such as custom properties.
 
 2. **Middleware Integration**:
-   - Middleware is used to check if the requested endpoint requires authentication. If the endpoint is not found or if authentication is required and not provided, appropriate HTTP responses (`404 Not Found` or `401 Unauthorized`) are returned.
+   - Middleware is used to check if the requested endpoint requires authentication. If the endpoint is not found or if authentication is required and not provided, an error is thrown.
 
 3. **NextJsAppRouter and NextJsPagesRouter**:
    - `NextJsAppRouter` is used for handling API routes in the Next.js App Router.
