@@ -55,9 +55,6 @@ const getUser = makeEndpoint({
     },
   ],
   response: userSchema,
-  customProperties: {
-    authRequired: true,
-  },
 });
 
 export const api = makeApi([getUser]);
