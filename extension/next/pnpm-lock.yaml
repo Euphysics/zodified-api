@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@zodified-api/core':
-        specifier: ^2.0.0
-        version: 2.0.0(zod@3.23.8)
+        specifier: ^2.0.2
+        version: 2.0.2(zod@3.23.8)
       next:
         specifier: ^14.2.5
         version: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -425,8 +425,8 @@ packages:
   '@vue/shared@3.4.38':
     resolution: {integrity: sha512-q0xCiLkuWWQLzVrecPb0RMsNWyxICOjPrcrwxTUEHb1fsnvni4dcuyG7RT/Ie7VPTvnjzIaWzRMUBsrqNj/hhw==}
 
-  '@zodified-api/core@2.0.0':
-    resolution: {integrity: sha512-vUm3Lnkz3QwVgbXeqD6uMe77lgfrwV8nmUSMjgNva68xiPUz1NHFJMEaxoTtT7GkbDA6cYrac2AEN+NWJg3K7Q==}
+  '@zodified-api/core@2.0.2':
+    resolution: {integrity: sha512-Tc57v9ECHXbGh/8dH3+73iVzhYsikBMoYjJnKMjhJMf0rkpX8KuZmS6Of8fLK7TH2DumDdN3Yr/JzSCdAbGI2Q==}
     peerDependencies:
       zod: ^3.23.8
 
@@ -1134,7 +1134,7 @@ snapshots:
 
   '@vue/shared@3.4.38': {}
 
-  '@zodified-api/core@2.0.0(zod@3.23.8)':
+  '@zodified-api/core@2.0.2(zod@3.23.8)':
     dependencies:
       zod: 3.23.8
 
