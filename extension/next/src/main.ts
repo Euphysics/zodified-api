@@ -29,11 +29,11 @@ export class NextJsAppRouter<
     >,
   ): (
     req: NextRequest,
-    params: Record<string, string | undefined>,
+    params: Record<string, string | undefined> | undefined,
   ) => Promise<NextResponse> {
     return async (
       req: NextRequest,
-      params: Record<string, string | undefined>,
+      params: Record<string, string | undefined> | undefined,
     ) => {
       const adaptedReq = new NextRequestAdapter(req, params);
       await adaptedReq.initialize();

@@ -11,6 +11,7 @@ import {
 import type {
   Aliases,
   AnyZodifiedRequestOptions,
+  AuthConfig,
   Method,
   MockData,
   Narrow,
@@ -76,6 +77,7 @@ export class ZodifiedClass<Api extends ZodifiedEndpointDefinitions> {
       throw new Error("Zodified: api must be an array");
     }
 
+    this.applyAuthDefaults();
     checkApi(this.api);
 
     this.options = {
@@ -89,6 +91,22 @@ export class ZodifiedClass<Api extends ZodifiedEndpointDefinitions> {
     this.initPlugins();
     if ([true, "all", "request", "response"].includes(this.options.validate)) {
       this.use(zodValidationPlugin(this.options));
+    }
+  }
+
+  private applyAuthDefaults() {
+    const authDefaults: AuthConfig = {
+      requireSession: true,
+      requireUser: false,
+      roles: [],
+      permissions: [],
+    };
+    for (const endpoint of this.api) {
+      const { auth } = endpoint;
+      endpoint.auth = {
+        ...authDefaults,
+        ...auth,
+      };
     }
   }
 

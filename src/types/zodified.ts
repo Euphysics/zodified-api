@@ -39,6 +39,34 @@ export type RequestFormat =
   | "binary" // for binary data / file uploads
   | "text"; // for text data
 
+export type AuthConfig = {
+  /**
+   * Whether the endpoint requires a session
+   *
+   * the default is `true`
+   */
+  requireSession?: boolean;
+  /**
+   * Whether the endpoint requires a user.
+   * If true, the endpoint requires basic authentication.
+   *
+   * the default is `false`
+   */
+  requireUser?: boolean;
+  /**
+   * Optional roles required to access the endpoint
+   *
+   * the default is `[]`
+   */
+  roles?: string[];
+  /**
+   * Optional permissions required to access the endpoint
+   *
+   * the default is `[]`
+   */
+  permissions?: string[];
+};
+
 type EndpointDefinitionsByMethod<
   Api extends ZodifiedEndpointDefinition[],
   M extends Method,
@@ -703,9 +731,11 @@ export interface ZodifiedEndpointDefinition<R = unknown> {
    */
   errors?: Array<ZodifiedEndpointError>;
   /**
-   * optional custom properties
+   * optional auth configuration
+   *
+   * NOTE: this is not used by `@zodified-api/core` but can be used by server implementations
    */
-  customProperties?: Record<string, unknown>;
+  auth?: AuthConfig;
 }
 
 export type ZodifiedEndpointDefinitions = ZodifiedEndpointDefinition[];
