@@ -403,7 +403,7 @@ export class ZodifiedClass<Api extends ZodifiedEndpointDefinitions> {
       ...config,
       method: "post",
       url: path,
-      data,
+      body: data,
       // biome-ignore lint/suspicious/noExplicitAny: No need to specify the type here
     } as any);
   }
@@ -429,7 +429,7 @@ export class ZodifiedClass<Api extends ZodifiedEndpointDefinitions> {
       ...config,
       method: "put",
       url: path,
-      data,
+      body: data,
       // biome-ignore lint/suspicious/noExplicitAny: No need to specify the type here
     } as any);
   }
@@ -457,7 +457,7 @@ export class ZodifiedClass<Api extends ZodifiedEndpointDefinitions> {
       ...config,
       method: "patch",
       url: path,
-      data,
+      body: data,
       // biome-ignore lint/suspicious/noExplicitAny: No need to specify the type here
     } as any);
   }
@@ -484,7 +484,7 @@ export class ZodifiedClass<Api extends ZodifiedEndpointDefinitions> {
       ...config,
       method: "delete",
       url: path,
-      data,
+      body: data,
       // biome-ignore lint/suspicious/noExplicitAny: No need to specify the type here
     } as any);
   }
