@@ -12,18 +12,17 @@
     "api",
     "typescript"
   ],
-  "version": "2.1.1",
+  "version": "2.2.0",
   "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/index.umd.js",
+  "main": "./dist/index.es.js",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js",
       "types": "./dist/index.d.ts"
     }
   },
@@ -44,21 +43,19 @@
       "biome check --write"
     ]
   },
-  "dependencies": {
-    "zod": "^3.23.8"
-  },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
-    "@types/node": "^22.5.1",
-    "@vitest/coverage-v8": "^2.0.5",
-    "husky": "^9.1.5",
-    "jsdom": "^25.0.0",
-    "lint-staged": "^15.2.9",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.2",
-    "vite-plugin-dts": "^4.0.3",
-    "vitest": "^2.0.5",
-    "vitest-fetch-mock": "^0.3.0"
+    "@biomejs/biome": "^1.9.2",
+    "@types/node": "^22.7.0",
+    "@vitest/coverage-v8": "^2.1.1",
+    "husky": "^9.1.6",
+    "jsdom": "^25.0.1",
+    "lint-staged": "^15.2.10",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vite-plugin-dts": "^4.2.2",
+    "vitest": "^2.1.1",
+    "vitest-fetch-mock": "^0.3.0",
+    "zod": "^3.23.8"
   },
   "peerDependencies": {
     "zod": "^3.23.8"

@@ -1,5 +1,6 @@
-import type { BaseRequest, Method } from "@zodified-api/core";
+import type { Method } from "@zodified-api/core";
 import { NextRequest } from "next/server";
+import type { BaseRequest } from "../types";
 
 export class NextRequestAdapter extends NextRequest implements BaseRequest {
   zodifiedMethod: Method;

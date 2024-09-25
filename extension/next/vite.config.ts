@@ -8,6 +8,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.ts"),
       name: "ZodifiedApi/Next",
       fileName: (format) => `index.${format}.js`,
+      formats: ["es"],
     },
     rollupOptions: {
       external: ["zod", "next"],

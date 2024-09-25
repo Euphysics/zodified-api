@@ -32,20 +32,6 @@ export type FilterArrayByKey<
     : FilterArrayByKey<Tail, K, Acc>
   : Acc;
 
-/**
- * filter an array type by removing undefined values
- * @param T - array type
- * @details - this is using tail recursion type optimization from typescript 4.5
- */
-export type DefinedArray<
-  T extends unknown[],
-  Acc extends unknown[] = [],
-> = T extends [infer Head, ...infer Tail]
-  ? Head extends undefined
-    ? DefinedArray<Tail, Acc>
-    : DefinedArray<Tail, [Head, ...Acc]>
-  : Acc;
-
 type Try<A, B, C> = A extends B ? A : C;
 
 type NarrowRaw<T> =
@@ -68,22 +54,10 @@ type NarrowNotZod<T> = Try<T, ZodType, NarrowRaw<T>>;
 export type Narrow<T> = Try<T, [], NarrowNotZod<T>>;
 
 /**
- * merge all union types into a single type
- * @param T - union type
- */
-export type MergeUnion<T> = (
-  T extends unknown
-    ? (k: T) => void
-    : never
-) extends (k: infer I) => void
-  ? { [K in keyof I]: I[K] }
-  : never;
-
-/**
  * get all required properties from an object type
  * @param T - object type
  */
-export type RequiredProps<T> = Omit<
+type RequiredProps<T> = Omit<
   T,
   {
     [P in keyof T]-?: undefined extends T[P] ? P : never;
@@ -94,7 +68,7 @@ export type RequiredProps<T> = Omit<
  * get all optional properties from an object type
  * @param T - object type
  */
-export type OptionalProps<T> = Pick<
+type OptionalProps<T> = Pick<
   T,
   {
     [P in keyof T]-?: undefined extends T[P] ? P : never;
@@ -144,7 +118,7 @@ export type PickDefined<T> = Pick<
 /**
  * check if two types are equal
  */
-export type IfEquals<T, U, Y = unknown, N = never> = (<G>() => G extends T
+type IfEquals<T, U, Y = unknown, N = never> = (<G>() => G extends T
   ? 1
   : 2) extends <G>() => G extends U ? 1 : 2
   ? Y
@@ -171,16 +145,13 @@ export type NeverIfEmpty<T> = IfEquals<T, {}, never, T>;
  * type B = NotEmpty<A>; // B = never
  */
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-export type UndefinedIfEmpty<T> = IfEquals<T, {}, undefined, T>;
-
 export type UndefinedIfNever<T> = IfEquals<T, never, undefined, T>;
 
 type RequiredChildProps<T> = {
   [K in keyof T]: IfEquals<T[K], OptionalProps<T[K]>, never, K>;
 }[keyof T];
 
-export type OptionalChildProps<T> = {
+type OptionalChildProps<T> = {
   [K in keyof T]: IfEquals<T[K], OptionalProps<T[K]>, K, never>;
 }[keyof T];
 
@@ -219,8 +190,6 @@ export type ReadonlyDeep<T> = T extends (infer R)[]
     : T extends object
       ? DeepReadonlyObject<T>
       : T;
-
-export type MaybeReadonly<T> = T | ReadonlyDeep<T>;
 
 /**
  * Map a type an api description parameter to a zod infer type
@@ -265,11 +234,7 @@ export type MapSchemaParameters<
  * @param Sep - Separator, must be a string literal not a union of string literals
  * @returns Tuple of strings
  */
-export type Split<
-  Str,
-  Sep extends string,
-  Acc extends string[] = [],
-> = Str extends ""
+type Split<Str, Sep extends string, Acc extends string[] = []> = Str extends ""
   ? Acc
   : Str extends `${infer T}${Sep}${infer U}`
     ? Split<U, Sep, [...Acc, T]>
@@ -289,7 +254,7 @@ type ConcatSplits<
  * @param Sep - The separators to split on, a tuple of strings with one or more characters.
  * @returns The tuple of each split. if sep is an empty string, returns a tuple of each character.
  */
-export type SplitMany<
+type SplitMany<
   Str extends string,
   Sep extends string[],
   Acc extends string[] = [],
@@ -322,7 +287,7 @@ type FilterParams<Params, Acc extends string[] = []> = Params extends [
  * // output: ["id", "postId"]
  * ```
  */
-export type ApiPathToParams<Path extends string> = FilterParams<
+type ApiPathToParams<Path extends string> = FilterParams<
   SplitMany<Path, PathSeparator>
 >;
 
@@ -334,19 +299,6 @@ export type ApiPathToParams<Path extends string> = FilterParams<
 export type PathParamNames<Path> = Path extends string
   ? ApiPathToParams<Path>[number]
   : never;
-
-/**
- * Check if two type are equal else generate a compiler error
- * @param T - type to check
- * @param U - type to check against
- * @returns true if types are equal else a detailed compiler error
- */
-export type Assert<T, U> = IfEquals<
-  T,
-  U,
-  true,
-  { error: "Types are not equal"; type1: T; type2: U }
->;
 
 export type PickRequired<T, K extends keyof T> = Merge<T, { [P in K]-?: T[P] }>;
 
@@ -375,7 +327,7 @@ export type TupleFlat<T, Acc extends unknown[] = []> = T extends [
  * @param union - Union of objects
  * @returns Intersection of objects
  */
-export type UnionToIntersection<union> =
+type UnionToIntersection<union> =
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   (union extends any ? (k: union) => void : never) extends (
     k: infer intersection,

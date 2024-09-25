@@ -10,7 +10,7 @@ import type {
   ZodifiedQueryParamsByPath,
   ZodifiedResponseByAlias,
   ZodifiedResponseByPath,
-} from "./zodified";
+} from "@zodified-api/core";
 
 export interface BaseRequest {
   zodifiedMethod: Method;
