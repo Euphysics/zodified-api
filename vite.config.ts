@@ -9,14 +9,6 @@ export default defineConfig({
       name: "ZodifiedApi",
       fileName: (format) => `index.${format}.js`,
     },
-    rollupOptions: {
-      external: ["zod"],
-      output: {
-        globals: {
-          zod: "zod",
-        },
-      },
-    },
     sourcemap: false,
     minify: "esbuild",
   },

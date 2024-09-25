@@ -2,7 +2,6 @@ import type { z } from "zod";
 import type {
   FilterArrayByKey,
   FilterArrayByValue,
-  IfEquals,
   MapSchemaParameters,
   Merge,
   NeverIfEmpty,
@@ -17,7 +16,7 @@ import type {
 } from "./utils";
 
 // Fetch RequestConfig Type
-export interface FetchRequestConfig extends RequestInit {
+interface FetchRequestConfig extends RequestInit {
   baseURL?: string;
   params?: Record<string, string | number | boolean>;
   headers?: Record<string, string>;
@@ -28,11 +27,11 @@ export type ZodifiedResponse = Response & {
   parsedBody: unknown;
 };
 
-export type MutationMethod = "post" | "put" | "patch" | "delete";
+type MutationMethod = "post" | "put" | "patch" | "delete";
 
 export type Method = "get" | "head" | "options" | MutationMethod;
 
-export type RequestFormat =
+type RequestFormat =
   | "json" // default
   | "form-data" // for file uploads
   | "form-url" // for hiding query params in the body
@@ -91,13 +90,6 @@ export type ZodifiedPathsByMethod<
 export type Aliases<Api extends ZodifiedEndpointDefinition[]> =
   FilterArrayByKey<Api, "alias">[number]["alias"];
 
-export type ZodifiedResponseForEndpoint<
-  Endpoint extends ZodifiedEndpointDefinition,
-  Frontend extends boolean = true,
-> = Frontend extends true
-  ? z.output<Endpoint["response"]>
-  : z.input<Endpoint["response"]>;
-
 export type ZodifiedResponseByPath<
   Api extends ZodifiedEndpointDefinition[],
   M extends Method,
@@ -115,97 +107,7 @@ export type ZodifiedResponseByAlias<
   ? z.output<ZodifiedEndpointDefinitionByAlias<Api, Alias>[number]["response"]>
   : z.input<ZodifiedEndpointDefinitionByAlias<Api, Alias>[number]["response"]>;
 
-export type ZodifiedDefaultErrorForEndpoint<
-  Endpoint extends ZodifiedEndpointDefinition,
-> = FilterArrayByValue<
-  Endpoint["errors"],
-  {
-    status: "default";
-  }
->[number]["schema"];
-
-type ZodifiedDefaultErrorByPath<
-  Api extends ZodifiedEndpointDefinition[],
-  M extends Method,
-  Path extends ZodifiedPathsByMethod<Api, M>,
-> = FilterArrayByValue<
-  ZodifiedEndpointDefinitionByPath<Api, M, Path>[number]["errors"],
-  {
-    status: "default";
-  }
->[number]["schema"];
-
-type ZodifiedDefaultErrorByAlias<
-  Api extends ZodifiedEndpointDefinition[],
-  Alias extends string,
-> = FilterArrayByValue<
-  ZodifiedEndpointDefinitionByAlias<Api, Alias>[number]["errors"],
-  {
-    status: "default";
-  }
->[number]["schema"];
-
-type IfNever<E, A> = IfEquals<E, never, A, E>;
-
-export type ZodifiedErrorForEndpoint<
-  Endpoint extends ZodifiedEndpointDefinition,
-  Status extends number,
-  Frontend extends boolean = true,
-> = Frontend extends true
-  ? z.output<
-      IfNever<
-        FilterArrayByValue<
-          Endpoint["errors"],
-          {
-            status: Status;
-          }
-        >[number]["schema"],
-        ZodifiedDefaultErrorForEndpoint<Endpoint>
-      >
-    >
-  : z.input<
-      IfNever<
-        FilterArrayByValue<
-          Endpoint["errors"],
-          {
-            status: Status;
-          }
-        >[number]["schema"],
-        ZodifiedDefaultErrorForEndpoint<Endpoint>
-      >
-    >;
-
-export type ZodifiedErrorByPath<
-  Api extends ZodifiedEndpointDefinition[],
-  M extends Method,
-  Path extends ZodifiedPathsByMethod<Api, M>,
-  Status extends number,
-  Frontend extends boolean = true,
-> = Frontend extends true
-  ? z.output<
-      IfNever<
-        FilterArrayByValue<
-          ZodifiedEndpointDefinitionByPath<Api, M, Path>[number]["errors"],
-          {
-            status: Status;
-          }
-        >[number]["schema"],
-        ZodifiedDefaultErrorByPath<Api, M, Path>
-      >
-    >
-  : z.input<
-      IfNever<
-        FilterArrayByValue<
-          ZodifiedEndpointDefinitionByPath<Api, M, Path>[number]["errors"],
-          {
-            status: Status;
-          }
-        >[number]["schema"],
-        ZodifiedDefaultErrorByPath<Api, M, Path>
-      >
-    >;
-
-export type ErrorsToFetch<T, Acc extends unknown[] = []> = T extends [
+type ErrorsToFetch<T, Acc extends unknown[] = []> = T extends [
   infer Head,
   ...infer Tail,
 ]
@@ -243,42 +145,7 @@ export type ZodifiedMatchingErrorsByAlias<
   ZodifiedEndpointDefinitionByAlias<Api, Alias>[number]["errors"]
 >[number];
 
-export type ZodifiedErrorByAlias<
-  Api extends ZodifiedEndpointDefinition[],
-  Alias extends string,
-  Status extends number,
-  Frontend extends boolean = true,
-> = Frontend extends true
-  ? z.output<
-      IfNever<
-        FilterArrayByValue<
-          ZodifiedEndpointDefinitionByAlias<Api, Alias>[number]["errors"],
-          {
-            status: Status;
-          }
-        >[number]["schema"],
-        ZodifiedDefaultErrorByAlias<Api, Alias>
-      >
-    >
-  : z.input<
-      IfNever<
-        FilterArrayByValue<
-          ZodifiedEndpointDefinitionByAlias<Api, Alias>[number]["errors"],
-          {
-            status: Status;
-          }
-        >[number]["schema"],
-        ZodifiedDefaultErrorByAlias<Api, Alias>
-      >
-    >;
-
-export type BodySchemaForEndpoint<Endpoint extends ZodifiedEndpointDefinition> =
-  FilterArrayByValue<
-    Endpoint["parameters"],
-    { type: "Body" }
-  >[number]["schema"];
-
-export type BodySchema<
+type BodySchema<
   Api extends ZodifiedEndpointDefinition[],
   M extends Method,
   Path extends ZodifiedPathsByMethod<Api, M>,
@@ -286,13 +153,6 @@ export type BodySchema<
   ZodifiedEndpointDefinitionByPath<Api, M, Path>[number]["parameters"],
   { type: "Body" }
 >[number]["schema"];
-
-export type ZodifiedBodyForEndpoint<
-  Endpoint extends ZodifiedEndpointDefinition,
-  Frontend extends boolean = true,
-> = Frontend extends true
-  ? z.input<BodySchemaForEndpoint<Endpoint>>
-  : z.output<BodySchemaForEndpoint<Endpoint>>;
 
 export type ZodifiedBodyByPath<
   Api extends ZodifiedEndpointDefinition[],
@@ -303,7 +163,7 @@ export type ZodifiedBodyByPath<
   ? z.input<BodySchema<Api, M, Path>>
   : z.output<BodySchema<Api, M, Path>>;
 
-export type BodySchemaByAlias<
+type BodySchemaByAlias<
   Api extends ZodifiedEndpointDefinition[],
   Alias extends string,
 > = FilterArrayByValue<
@@ -318,18 +178,6 @@ export type ZodifiedBodyByAlias<
 > = Frontend extends true
   ? z.input<BodySchemaByAlias<Api, Alias>>
   : z.output<BodySchemaByAlias<Api, Alias>>;
-
-export type ZodifiedQueryParamsForEndpoint<
-  Endpoint extends ZodifiedEndpointDefinition,
-  Frontend extends boolean = true,
-> = NeverIfEmpty<
-  UndefinedToOptional<
-    MapSchemaParameters<
-      FilterArrayByValue<Endpoint["parameters"], { type: "Query" }>,
-      Frontend
-    >
-  >
->;
 
 export type ZodifiedQueryParamsByPath<
   Api extends ZodifiedEndpointDefinition[],
@@ -361,34 +209,6 @@ export type ZodifiedQueryParamsByAlias<
       >,
       Frontend
     >
-  >
->;
-
-/**
- * @deprecated - use ZodifiedQueryParamsByPath instead
- */
-export type ZodifiedPathParams<Path extends string> = NeverIfEmpty<
-  Record<PathParamNames<Path>, string | number>
->;
-
-export type ZodifiedPathParamsForEndpoint<
-  Endpoint extends ZodifiedEndpointDefinition,
-  Frontend extends boolean = true,
-  PathParameters = UndefinedToOptional<
-    MapSchemaParameters<
-      FilterArrayByValue<Endpoint["parameters"], { type: "Path" }>,
-      Frontend
-    >
-  >,
-> = NeverIfEmpty<
-  Simplify<
-    Omit<
-      {
-        [K in PathParamNames<Endpoint["path"]>]: string | number | boolean;
-      },
-      keyof PathParameters
-    > &
-      PathParameters
   >
 >;
 
@@ -454,19 +274,7 @@ export type ZodifiedPathParamByAlias<
   >
 >;
 
-export type ZodifiedHeaderParamsForEndpoint<
-  Endpoint extends ZodifiedEndpointDefinition,
-  Frontend extends boolean = true,
-> = NeverIfEmpty<
-  UndefinedToOptional<
-    MapSchemaParameters<
-      FilterArrayByValue<Endpoint["parameters"], { type: "Header" }>,
-      Frontend
-    >
-  >
->;
-
-export type ZodifiedHeaderParamsByPath<
+type ZodifiedHeaderParamsByPath<
   Api extends ZodifiedEndpointDefinition[],
   M extends Method,
   Path extends ZodifiedPathsByMethod<Api, M>,
@@ -483,7 +291,7 @@ export type ZodifiedHeaderParamsByPath<
   >
 >;
 
-export type ZodifiedHeaderParamsByAlias<
+type ZodifiedHeaderParamsByAlias<
   Api extends ZodifiedEndpointDefinition[],
   Alias extends string,
   Frontend extends boolean = true,
@@ -499,7 +307,7 @@ export type ZodifiedHeaderParamsByAlias<
   >
 >;
 
-export type ZodifiedRequestOptionsByAlias<
+type ZodifiedRequestOptionsByAlias<
   Api extends ZodifiedEndpointDefinition[],
   Alias extends string,
 > = Merge<
@@ -513,7 +321,7 @@ export type ZodifiedRequestOptionsByAlias<
   Omit<FetchRequestConfig, "params" | "baseURL" | "body" | "method" | "url">
 >;
 
-export type ZodifiedMutationAliasRequest<Body, Config, ZodifiedResponse> =
+type ZodifiedMutationAliasRequest<Body, Config, ZodifiedResponse> =
   RequiredKeys<Config> extends never
     ? (
         body: ReadonlyDeep<UndefinedIfNever<Body>>,
@@ -524,7 +332,7 @@ export type ZodifiedMutationAliasRequest<Body, Config, ZodifiedResponse> =
         configOptions: ReadonlyDeep<Config>,
       ) => Promise<ZodifiedResponse>;
 
-export type ZodifiedAliasRequest<Config, ZodifiedResponse> =
+type ZodifiedAliasRequest<Config, ZodifiedResponse> =
   RequiredKeys<Config> extends never
     ? (configOptions?: ReadonlyDeep<Config>) => Promise<ZodifiedResponse>
     : (configOptions: ReadonlyDeep<Config>) => Promise<ZodifiedResponse>;
@@ -545,7 +353,7 @@ export type ZodifiedAliases<Api extends ZodifiedEndpointDefinition[]> = {
       >;
 };
 
-export type AnyZodifiedMethodOptions = Merge<
+type AnyZodifiedMethodOptions = Merge<
   {
     params?: Record<string, unknown>;
     queries?: Record<string, unknown>;
@@ -557,24 +365,6 @@ export type AnyZodifiedMethodOptions = Merge<
 export type AnyZodifiedRequestOptions = Merge<
   { method: Method; url: string; mockResponse?: ZodifiedResponse },
   AnyZodifiedMethodOptions
->;
-
-/**
- * @deprecated - use ZodifiedRequestOptionsByPath instead
- */
-export type ZodifiedMethodOptions<
-  Api extends ZodifiedEndpointDefinition[],
-  M extends Method,
-  Path extends ZodifiedPathsByMethod<Api, M>,
-> = Merge<
-  SetPropsOptionalIfChildrenAreOptional<
-    PickDefined<{
-      params: ZodifiedPathParamsByPath<Api, M, Path>;
-      queries: ZodifiedQueryParamsByPath<Api, M, Path>;
-      headers: ZodifiedHeaderParamsByPath<Api, M, Path>;
-    }>
-  >,
-  Omit<FetchRequestConfig, "params" | "baseURL" | "body" | "method" | "url">
 >;
 
 /**
@@ -651,8 +441,6 @@ export type ZodifiedEndpointParameter<T = unknown> = {
   schema: z.ZodType<T>;
 };
 
-export type ZodifiedEndpointParameters = ZodifiedEndpointParameter[];
-
 export type ZodifiedEndpointError<T = unknown> = {
   /**
    * status code of the error
@@ -668,8 +456,6 @@ export type ZodifiedEndpointError<T = unknown> = {
    */
   schema: z.ZodType<T>;
 };
-
-export type ZodifiedEndpointErrors = ZodifiedEndpointError[];
 
 /**
  * Zodified enpoint definition that should be used to create a new instance of Zodified
