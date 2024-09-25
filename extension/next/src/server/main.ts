@@ -10,8 +10,10 @@ import type {
   ZodifiedPathParamsByPath,
   ZodifiedPathsByMethod,
   ZodifiedQueryParamsByPath,
-} from "@/types";
+} from "@zodified-api/core";
 import { z } from "zod";
+
+import { ServerError } from "../error";
 
 export abstract class ApiServer<
   R extends Response,
@@ -139,6 +141,9 @@ export abstract class ApiServer<
     try {
       await this.runMiddlewares(req, res);
     } catch (error) {
+      if (error instanceof ServerError) {
+        return res.status(error.code).json({ error: error.message });
+      }
       console.error("Middleware error:", error);
       return res.status(500).json({ error: "Internal server error" });
     }

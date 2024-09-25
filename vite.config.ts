@@ -8,14 +8,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.ts"),
       name: "ZodifiedApi",
       fileName: (format) => `index.${format}.js`,
-    },
-    rollupOptions: {
-      external: ["zod"],
-      output: {
-        globals: {
-          zod: "zod",
-        },
-      },
+      formats: ["es"],
     },
     sourcemap: false,
     minify: "esbuild",

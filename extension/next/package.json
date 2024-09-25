@@ -18,13 +18,12 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.umd.js",
+  "main": "./dist/index.es.js",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js",
       "types": "./dist/index.d.ts"
     }
   },
@@ -34,18 +33,16 @@
     "build:pack": "tsc && vite build && npm pack",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "@zodified-api/core": "^2.1.1",
-    "next": "^14.2.7",
-    "zod": "^3.23.8"
-  },
   "devDependencies": {
-    "@types/node": "^22.5.1",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.2",
-    "vite-plugin-dts": "^4.0.3"
+    "@types/node": "^22.7.0",
+    "@zodified-api/core": "^2.1.1",
+    "terser": "^5.33.0",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vite-plugin-dts": "^4.2.2"
   },
   "peerDependencies": {
+    "next": "^14.2.13",
     "zod": "^3.23.8"
   },
   "packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"

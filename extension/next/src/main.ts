@@ -1,12 +1,12 @@
-import {
-  ApiServer,
-  type Method,
-  type ZodifiedEndpointDefinition,
-  type ZodifiedHandler,
-  type ZodifiedPathsByMethod,
+import type {
+  Method,
+  ZodifiedEndpointDefinition,
+  ZodifiedHandler,
+  ZodifiedPathsByMethod,
 } from "@zodified-api/core";
 import type { NextRequest, NextResponse } from "next/server";
 import { NextRequestAdapter, NextResponseAdapter } from "./app";
+import { ApiServer } from "./server";
 
 export class NextJsAppRouter<
   Api extends ZodifiedEndpointDefinition[],
