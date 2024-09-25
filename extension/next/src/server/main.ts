@@ -1,17 +1,19 @@
 import type {
-  BaseRequest,
-  BaseResponse,
   Method,
-  Middleware,
   ZodifiedBodyByPath,
   ZodifiedEndpointDefinition,
-  ZodifiedHandler,
-  ZodifiedHandlerByAlias,
   ZodifiedPathParamsByPath,
   ZodifiedPathsByMethod,
   ZodifiedQueryParamsByPath,
 } from "@zodified-api/core";
 import { z } from "zod";
+import type {
+  BaseRequest,
+  BaseResponse,
+  Middleware,
+  ZodifiedHandler,
+  ZodifiedHandlerByAlias,
+} from "../types";
 
 import { ServerError } from "../error";
 

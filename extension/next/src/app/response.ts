@@ -1,5 +1,5 @@
-import type { BaseResponse } from "@zodified-api/core";
 import { NextResponse } from "next/server";
+import type { BaseResponse } from "../types";
 
 export class NextResponseAdapter implements BaseResponse<NextResponse> {
   private code = 200;

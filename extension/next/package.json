@@ -13,7 +13,7 @@
     "next.js",
     "typescript"
   ],
-  "version": "2.1.1",
+  "version": "2.2.0",
   "type": "module",
   "files": [
     "dist"
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.7.0",
-    "@zodified-api/core": "^2.1.1",
+    "@zodified-api/core": "^2.2.0",
     "terser": "^5.33.0",
     "typescript": "^5.6.2",
     "vite": "^5.4.8",
