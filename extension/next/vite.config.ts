@@ -11,18 +11,23 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["zod", "next"],
+      external: ["zod", "next/server"],
       output: {
         globals: {
           zod: "zod",
-          next: "next",
+          "next/server": "next/server",
         },
       },
     },
     sourcemap: false,
     minify: "esbuild",
   },
-  plugins: [dts()],
+  plugins: [
+    dts({
+      include: ["src/**/*.ts"],
+      exclude: ["**/*.test.ts"],
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
