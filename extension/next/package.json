@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.9.3",
-    "@zodified-api/core": "^2.3.1",
+    "@zodified-api/core": "^2.3.2",
     "terser": "^5.36.0",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
