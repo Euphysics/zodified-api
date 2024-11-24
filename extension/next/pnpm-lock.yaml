@@ -19,8 +19,8 @@ importers:
         specifier: ^22.9.3
         version: 22.9.3
       '@zodified-api/core':
-        specifier: ^2.3.1
-        version: 2.3.1(zod@3.23.8)
+        specifier: ^2.3.2
+        version: 2.3.2(zod@3.23.8)
       terser:
         specifier: ^5.36.0
         version: 5.36.0
@@ -549,8 +549,8 @@ packages:
   '@vue/shared@3.5.13':
     resolution: {integrity: sha512-/hnE/qP5ZoGpol0a5mDi45bOd7t3tjYJBjsgCsivow7D48cJeV5l05RD82lPqi7gRiphZM37rnhW1l6ZoCNNnQ==}
 
-  '@zodified-api/core@2.3.1':
-    resolution: {integrity: sha512-lCkRI2d4Vph72B6mngR/Xy15YNclYfCgVIY5bI4ILsZxVNWfwv6q1DdN9wBDIBE+B/g5ugvBbh6E6B5ha56eUQ==}
+  '@zodified-api/core@2.3.2':
+    resolution: {integrity: sha512-I3ITm+/wkZEPKViq/2wc9cE+RnEzlu6z8bh3ZFUEFHD0rcQp5xPC84bNXPURtlNJb0KIQRsCKe0RK9/mVHf0gg==}
     peerDependencies:
       zod: ^3.23.8
 
@@ -1382,7 +1382,7 @@ snapshots:
 
   '@vue/shared@3.5.13': {}
 
-  '@zodified-api/core@2.3.1(zod@3.23.8)':
+  '@zodified-api/core@2.3.2(zod@3.23.8)':
     dependencies:
       zod: 3.23.8
 
