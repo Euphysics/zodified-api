@@ -1,4 +1,4 @@
-import type { ZodifiedPlugin } from "@/types";
+import type { ZodifiedPlugin } from "@/types/zodified";
 import { getFormDataStream } from "./utils";
 
 const plugin: ZodifiedPlugin = {

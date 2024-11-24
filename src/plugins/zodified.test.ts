@@ -1,10 +1,10 @@
+import type { ReadonlyDeep } from "@/types/utils";
 import type {
   AnyZodifiedRequestOptions,
-  ReadonlyDeep,
   ZodifiedEndpointDefinitions,
   ZodifiedPlugin,
   ZodifiedResponse,
-} from "@/types";
+} from "@/types/zodified";
 import { describe, expect, it, vi } from "vitest";
 import { type PluginId, ZodifiedPlugins } from "./zodified";
 

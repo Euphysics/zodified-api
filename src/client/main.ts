@@ -1,6 +1,5 @@
 import { checkApi } from "@/api";
 import {
-  type PluginId,
   ZodifiedPlugins,
   formDataPlugin,
   formURLPlugin,
@@ -8,17 +7,20 @@ import {
   mockPlugin,
   zodValidationPlugin,
 } from "@/plugins";
+import type { PluginId } from "@/plugins";
+import type {
+  Narrow,
+  PickRequired,
+  ReadonlyDeep,
+  RequiredKeys,
+  UndefinedIfNever,
+} from "@/types/utils";
 import type {
   Aliases,
   AnyZodifiedRequestOptions,
   AuthConfig,
   Method,
   MockData,
-  Narrow,
-  PickRequired,
-  ReadonlyDeep,
-  RequiredKeys,
-  UndefinedIfNever,
   ZodifiedAliases,
   ZodifiedBodyByPath,
   ZodifiedEndpointDefinitionByAlias,
@@ -31,7 +33,7 @@ import type {
   ZodifiedRequestOptionsByPath,
   ZodifiedResponse,
   ZodifiedResponseByPath,
-} from "@/types";
+} from "@/types/zodified";
 import { omit, replacePathParams, replaceQueryParams } from "@/utils";
 
 /**

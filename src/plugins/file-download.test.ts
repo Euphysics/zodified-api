@@ -2,7 +2,7 @@ import type {
   AnyZodifiedRequestOptions,
   ZodifiedEndpointDefinitions,
   ZodifiedResponse,
-} from "@/types";
+} from "@/types/zodified";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { z } from "zod";
 import {

@@ -3,7 +3,7 @@ import type {
   ZodifiedEndpointDefinitions,
   ZodifiedEndpointError,
   ZodifiedEndpointParameter,
-} from "@/types";
+} from "@/types/zodified";
 import { beforeEach, describe, expect, it } from "vitest";
 import { z } from "zod";
 import {

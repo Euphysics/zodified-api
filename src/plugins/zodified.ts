@@ -1,11 +1,11 @@
+import type { ReadonlyDeep } from "@/types/utils";
 import type {
   AnyZodifiedRequestOptions,
   Method,
-  ReadonlyDeep,
   ZodifiedEndpointDefinitions,
   ZodifiedPlugin,
   ZodifiedResponse,
-} from "@/types";
+} from "@/types/zodified";
 
 export type PluginId = {
   key: string;

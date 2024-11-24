@@ -3,7 +3,7 @@ import type {
   ZodifiedEndpointDefinitions,
   ZodifiedPlugin,
   ZodifiedResponse,
-} from "@/types";
+} from "@/types/zodified";
 
 interface DownloadProgress {
   totalBytes: number;
