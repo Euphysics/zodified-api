@@ -1,13 +1,13 @@
+import type { ReadonlyDeep } from "@/types/utils";
 import type {
   AnyZodifiedRequestOptions,
   Method,
-  ReadonlyDeep,
   ZodifiedEndpointDefinition,
   ZodifiedEndpointDefinitions,
   ZodifiedMatchingErrorsByAlias,
   ZodifiedMatchingErrorsByPath,
   ZodifiedPathsByMethod,
-} from "@/types";
+} from "@/types/zodified";
 
 /**
  * omit properties from an object

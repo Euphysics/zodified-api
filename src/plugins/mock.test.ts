@@ -1,10 +1,10 @@
+import type { ReadonlyDeep } from "@/types/utils";
 import type {
   AnyZodifiedRequestOptions,
   MockData,
-  ReadonlyDeep,
   ZodifiedEndpointDefinitions,
   ZodifiedResponse,
-} from "@/types";
+} from "@/types/zodified";
 import { describe, expect, it, vi } from "vitest";
 import { z } from "zod";
 import { mockPlugin } from "./mock";

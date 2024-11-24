@@ -1,4 +1,4 @@
-import type { ZodifiedOptions, ZodifiedPlugin } from "@/types";
+import type { ZodifiedOptions, ZodifiedPlugin } from "@/types/zodified";
 import { findEndpoint } from "@/utils";
 
 type Options = Required<

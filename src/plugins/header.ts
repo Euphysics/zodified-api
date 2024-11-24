@@ -1,4 +1,4 @@
-import type { ZodifiedPlugin } from "@/types";
+import type { ZodifiedPlugin } from "@/types/zodified";
 
 export const headerPlugin = (key: string, value: string): ZodifiedPlugin => ({
   request: async (_, config) => ({

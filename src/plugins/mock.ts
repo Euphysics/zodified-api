@@ -6,7 +6,7 @@ import type {
   ZodifiedPathsByMethod,
   ZodifiedPlugin,
   ZodifiedResponse,
-} from "@/types";
+} from "@/types/zodified";
 
 export const mockPlugin = <Api extends ZodifiedEndpointDefinitions>(
   mockData: MockData<Api>,

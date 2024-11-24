@@ -1,4 +1,4 @@
-import type { ZodifiedPlugin } from "@/types";
+import type { ZodifiedPlugin } from "@/types/zodified";
 
 const plugin: ZodifiedPlugin = {
   name: "form-url",

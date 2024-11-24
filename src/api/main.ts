@@ -1,3 +1,4 @@
+import type { Narrow, TupleFlat, UnionToTuple } from "@/types/utils";
 import type {
   Aliases,
   Method,
@@ -8,8 +9,7 @@ import type {
   ZodifiedEndpointError,
   ZodifiedEndpointParameter,
   ZodifiedPathsByMethod,
-} from "@/types";
-import type { Narrow, TupleFlat, UnionToTuple } from "@/types";
+} from "@/types/zodified";
 
 /**
  * check api for non unique paths
