@@ -24,9 +24,6 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "imports": {
-    "#core/*": "./src/*"
-  },
   "scripts": {
     "build": "tsup",
     "build:pack": "tsup && npm pack"
