@@ -16,7 +16,13 @@ export class NextJsAppRouter<
   NextRequestAdapter,
   NextResponseAdapter
 > {
-  handleAppRoute<M extends Method, Path extends ZodifiedPathsByMethod<Api, M>>(
+  handleAppRoute<
+    M extends Method,
+    Path extends ZodifiedPathsByMethod<Api, M>,
+    C extends { params?: Promise<Record<string, string | undefined>> } = {
+      params?: Promise<Record<string, string | undefined>>;
+    },
+  >(
     method: M,
     path: Path,
     handler: ZodifiedHandler<
@@ -27,15 +33,9 @@ export class NextJsAppRouter<
       NextRequestAdapter,
       NextResponseAdapter
     >,
-  ): (
-    req: NextRequest,
-    params: Record<string, string | undefined> | undefined,
-  ) => Promise<NextResponse> {
-    return async (
-      req: NextRequest,
-      params: Record<string, string | undefined> | undefined,
-    ) => {
-      const adaptedReq = new NextRequestAdapter(req, params);
+  ): (req: NextRequest, context: C) => Promise<NextResponse> {
+    return async (req: NextRequest, context: C) => {
+      const adaptedReq = new NextRequestAdapter(req, context);
       await adaptedReq.initialize();
       const adaptedRes = new NextResponseAdapter();
       return await this.handleByPathAndMethod(

@@ -12,15 +12,18 @@ export class NextRequestAdapter extends NextRequest implements BaseRequest {
 
   constructor(
     req: NextRequest,
-    params: Record<string, string | undefined> | undefined,
+    context: { params?: Promise<Record<string, string | undefined>> },
   ) {
     super(req); // NextRequest のすべてのプロパティを引き継ぐ
     this.zodifiedMethod = req.method.toLowerCase() as Method;
     this.zodifiedUrl = req.url;
     this.zodifiedHeaders = Object.fromEntries(req.headers.entries());
     this.zodifiedQuery = Object.fromEntries(req.nextUrl.searchParams.entries());
-    this.zodifiedParams = params ?? {};
     this.zodifiedBody = null;
+    this.zodifiedParams = {};
+    context.params?.then((params) => {
+      this.zodifiedParams = params || {};
+    });
   }
 
   async initialize(): Promise<void> {
