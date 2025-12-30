@@ -19,8 +19,8 @@ export class NextJsAppRouter<
   handleAppRoute<
     M extends Method,
     Path extends ZodifiedPathsByMethod<Api, M>,
-    C extends { params?: Promise<Record<string, string | undefined>> } = {
-      params?: Promise<Record<string, string | undefined>>;
+    C extends { params: Promise<Record<string, string | undefined>> } = {
+      params: Promise<Record<string, string | undefined>>;
     },
   >(
     method: M,
