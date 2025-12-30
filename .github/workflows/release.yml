@@ -6,59 +6,91 @@ on:
       - closed
     branches:
       - master
-  push:
-    branches:
-      - master
   workflow_dispatch:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'workflow_dispatch' ||
-      (github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'release'))
+      (github.event_name == 'pull_request' &&
+       github.event.action == 'closed' &&
+       github.event.pull_request.merged == true &&
+       contains(github.event.pull_request.labels.*.name, 'release'))
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 'latest'
+          version: '10.26.2'
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+          always-auth: true
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - name: Build Package
+      - name: Build workspace packages
         run: pnpm run build
 
-      - name: Set New Version and Release Tag
+      - name: Detect release version
         run: |
-          NEW_VERSION=$(node -pe "require('./package.json').version")
-          echo "NEW_VERSION=v${NEW_VERSION}" >> $GITHUB_ENV
-          echo "RELEASE_TAG=v${NEW_VERSION}" >> $GITHUB_ENV
+          VERSION=$(node -pe "require('./package.json').version")
+          echo "RELEASE_VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "RELEASE_TAG=v${VERSION}" >> $GITHUB_ENV
 
-      - name: Publish Package
+      - name: Ensure npm token is configured
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          echo "publish package"
-          echo "command like 'npm publish --access public --tag ${{ env.RELEASE_TAG }}'"
+          if [ -z "$NPM_TOKEN" ]; then
+            echo "NPM_TOKEN secret is not configured" >&2
+            exit 1
+          fi
+
+      - name: Publish npm packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+        run: |
+          set -euo pipefail
+          packages=("@zodified-api/core:packages/core" "@zodified-api/next:packages/next")
+          for entry in "${packages[@]}"; do
+            IFS=":" read -r package_name package_dir <<< "$entry"
+            if npm view "$package_name@$RELEASE_VERSION" >/dev/null 2>&1; then
+              echo "$package_name@$RELEASE_VERSION already exists, skipping publish"
+              continue
+            fi
+            pushd "$package_dir" >/dev/null
+            npm publish --access public --provenance --tag latest
+            popd >/dev/null
+          done
 
       - name: Push New Version Tag
+        env:
+          RELEASE_TAG: ${{ env.RELEASE_TAG }}
         run: |
-          if git rev-parse ${{ env.RELEASE_TAG }} >/dev/null 2>&1; then
-            echo "Tag ${{ env.RELEASE_TAG }} already exists, skipping..."
+          git fetch --tags --force
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "GitHub Actions"
+          if git rev-parse "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Tag $RELEASE_TAG already exists, skipping push"
           else
-            git tag ${{ env.RELEASE_TAG }}
-            git push origin ${{ env.RELEASE_TAG }}
+            git tag "$RELEASE_TAG"
+            git push origin "$RELEASE_TAG"
           fi
 
       - name: Release
@@ -67,4 +99,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: false
           tag_name: ${{ env.RELEASE_TAG }}
+          name: Release ${{ env.RELEASE_VERSION }}
           generate_release_notes: true
