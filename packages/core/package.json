@@ -1,0 +1,48 @@
+{
+  "name": "@zodified-api/core",
+  "description": "A type-safe API client and server library using Zod",
+  "author": "Euphysics",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Euphysics/zodified-api.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "zod",
+    "api",
+    "typescript"
+  ],
+  "version": "3.0.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "build:pack": "tsup && npm pack",
+    "test": "vitest run",
+    "test:cov": "vitest run --coverage",
+    "lint": "biome lint --write ./",
+    "format": "biome format --write ./"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "@vitest/coverage-v8": "^4.0.16",
+    "@zodified-api/typescript-config": "workspace:*",
+    "jsdom": "^27.4.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16",
+    "vitest-fetch-mock": "^0.4.5"
+  },
+  "peerDependencies": {
+    "zod": "^4.2.1"
+  },
+  "packageManager": "pnpm@10.26.2"
+}

@@ -1,0 +1,10 @@
+{
+  "extends": "@zodified-api/typescript-config/base.json",
+  "compilerOptions": {
+    "paths": {
+      "#core/*": ["./src/*"]
+    }
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

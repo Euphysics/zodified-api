@@ -103,6 +103,25 @@ const updatedUser = await ApiClient.put('/user', { payload: { id: 1, name: 'New 
 console.log(updatedUser); // { id: 1, name: 'New Name' }
 ```
 
+## Release & CI/CD
+
+The repository ships npm packages via two GitHub Actions workflows:
+
+- [Create Release PR](.github/workflows/create-release-pr.yml) — manually trigger this workflow from the **Actions** tab, pick a semantic version bump (`patch`, `minor`, or `major`), and it will update the root workspace plus the `@zodified-api/core` and `@zodified-api/next` packages to the same version, then open a pull request labelled `release`.
+- [Publish Release](.github/workflows/release.yml) — when the release PR is merged into `main` (or when the workflow is run manually), the job installs dependencies, builds the monorepo, publishes both npm packages (skipping ones that already exist), tags the commit (`vX.Y.Z`), and creates a GitHub Release with categorized notes.
+
+### Required secrets and variables
+
+- `APP_ID` (repository variable) and `PRIVATE_KEY` (repository secret) for the GitHub App that `Create Release PR` uses to open branches.
+- `NPM_TOKEN` (repository secret) with publish access to the `@zodified-api/*` scope so that `Publish Release` can run `npm publish --provenance`.
+
+### Typical release flow
+
+1. Run **Create Release PR** and review the generated changelog in the PR body.
+2. Merge the PR once the code is ready; the `release` label keeps the publish workflow scoped to intentional releases.
+3. Monitor the **Publish Release** workflow run: it will build, publish, push the `vX.Y.Z` tag, and open the GitHub Release automatically.
+4. If needed, you can re-run or manually dispatch **Publish Release** after fixing any issues; already-published package versions are skipped safely.
+
 ## API Reference
 
 ### `makeApi(endpoints: ZodifiedEndpointDefinition[])`

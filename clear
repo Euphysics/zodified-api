@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+DIRS_TO_CLEAN="node_modules dist build .cache .next .turbo"
+
+FIND_EXPR="."
+for DIR in $DIRS_TO_CLEAN; do
+  if [[ "$FIND_EXPR" == "." ]]; then
+    FIND_EXPR="$FIND_EXPR \\( -name $DIR"
+  else
+    FIND_EXPR="$FIND_EXPR -o -name $DIR"
+  fi
+done
+FIND_EXPR="$FIND_EXPR \\) -type d -prune"
+
+echo "Cleaning the following directories:"
+echo "find $FIND_EXPR -print"
+
+# Confirm before proceeding
+echo -n "Are you sure you want to delete these directories? (y/N): "
+read -r CONFIRM
+if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
+  echo "Aborting."
+  exit 0
+fi
+
+# Find and delete the directories
+eval "find $FIND_EXPR -print -exec rm -rf {} +"
+echo "Cleanup complete."
