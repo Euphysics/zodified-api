@@ -1,0 +1,5 @@
+{
+  "*.{ts,json}": [
+    "biome check --write"
+  ]
+}
