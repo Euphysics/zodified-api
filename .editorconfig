@@ -1,0 +1,35 @@
+# エディターの基本設定
+root = true
+
+# 全てのファイルに適用される共通設定
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+tab_width = 2
+
+# JSON ファイルの設定
+[*.json]
+indent_size = 2
+tab_width = 2
+
+# YAML ファイルの設定
+[*.{yaml,yml}]
+indent_size = 2
+
+# Markdown ファイルの設定
+[*.md]
+trim_trailing_whitespace = false
+indent_style = space
+indent_size = 2
+
+# Dockerfile の設定
+[Dockerfile]
+indent_style = tab
+
+# Makefile の設定
+[Makefile]
+indent_style = tab
