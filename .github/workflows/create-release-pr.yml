@@ -1,5 +1,5 @@
 name: Create Release PR
-  
+
 on:
   workflow_dispatch:
     inputs:
@@ -12,12 +12,18 @@ on:
           - 'minor'
           - 'major'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   create-release-pr:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -29,15 +35,24 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub Actions"
 
-      - name: Get new version
+      - name: Determine new version
         id: new-version
         run: |
-          echo "NEW_VERSION=$(npm --no-git-tag-version version ${{ github.event.inputs.release-version }})" >> $GITHUB_ENV
+          RAW_VERSION=$(npm --no-git-tag-version version ${{ github.event.inputs.release-version }})
+          # npm prefixes the output with 'v', which we strip for consistency
+          SANITIZED_VERSION=${RAW_VERSION#v}
+          echo "NEW_VERSION=${SANITIZED_VERSION}" >> $GITHUB_ENV
 
-      - name: Update package.json version
+      - name: Sync workspace package versions
+        env:
+          NEW_VERSION: ${{ env.NEW_VERSION }}
         run: |
-          git add package.json
-          git commit -m "chore: release ${{ env.NEW_VERSION }}"
+          node -e "const fs=require('fs');const path=require('path');const version=process.env.NEW_VERSION;const packages=['packages/core/package.json','packages/next/package.json'];for(const pkg of packages){const pkgPath=path.join(process.cwd(),pkg);const data=JSON.parse(fs.readFileSync(pkgPath,'utf8'));data.version=version;fs.writeFileSync(pkgPath,JSON.stringify(data,null,2)+'\n');}"
+
+      - name: Commit version bump
+        run: |
+          git add package.json packages/core/package.json packages/next/package.json
+          git commit -m "chore: release v${{ env.NEW_VERSION }}"
 
       - name: Generate GitHub App Token
         uses: actions/create-github-app-token@v1
@@ -57,8 +72,9 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-          branch: release/${{ env.NEW_VERSION }}
+          branch: release/v${{ env.NEW_VERSION }}
           title: release ${{ env.NEW_VERSION }}
           labels: release
           body: ${{ steps.pr-body.outputs.result }}
           token: ${{ steps.generate-token.outputs.token }}
+          base: master

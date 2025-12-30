@@ -1,8 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-
-import { useApi } from "./useApi";
-
 import type { UpdateUserPayload, User } from "@/api";
+import { useApi } from "./useApi";
 
 const fetchUser = async (id: number, api: ReturnType<typeof useApi>) => {
   try {
@@ -12,6 +10,7 @@ const fetchUser = async (id: number, api: ReturnType<typeof useApi>) => {
     return response;
   } catch (e) {
     console.error(e);
+    return undefined;
   }
 };
 

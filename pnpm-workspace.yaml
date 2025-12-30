@@ -1,0 +1,8 @@
+packages:
+  - example/*
+  - packages/*
+  - scripts/
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
